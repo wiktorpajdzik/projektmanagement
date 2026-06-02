@@ -1,26 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #F8FAFC;
+  --surface: #FFFFFF;
+  --surface-alt: #F1F5F9;
+  --primary: #334155;
+  --primary-dark: #0F172A;
+  --accent: #EA580C;
+  --accent-hover: #C2410C;
+  --muted: #64748B;
+  --border: #E2E8F0;
+  --text: #1E293B;
+  --text-muted: #64748B;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Bodoni Moda', serif;
+  line-height: 1.2;
+  color: var(--primary-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Utility classes via Tailwind theme */
+@theme {
+  --color-accent: #EA580C;
+  --color-accent-hover: #C2410C;
+  --color-primary: #334155;
+  --color-primary-dark: #0F172A;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F1F5F9;
+  --color-border: #E2E8F0;
+  --color-muted: #64748B;
+
+  --font-heading: 'Bodoni Moda', serif;
+  --font-body: 'Jost', sans-serif;
 }

@@ -1,0 +1,14 @@
+Wgraj tutaj zdjecia projektow.
+Oczekiwane nazwy plikow: 01.jpg, 02.jpg, 03.jpg, 04.jpg, 05.jpg, 06.jpg, 07.jpg, 08.jpg
+
+Kategorie (kolejnosc):
+01 - Malerarbeiten (Malowanie)
+02 - Putzarbeiten (Tynkowanie)
+03 - Trockenbau (Sucha zabudowa)
+04 - Fliesenarbeiten (Plytki)
+05 - Estrich (Wylewki)
+06 - Komplettausbau (Pod klucz)
+07 - Malerarbeiten (Malowanie) #2
+08 - Fliesenarbeiten (Plytki) #2
+
+Zalecany format: JPG, minimum 1200x900px
