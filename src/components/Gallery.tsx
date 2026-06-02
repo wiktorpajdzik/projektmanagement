@@ -129,13 +129,19 @@ export default function Gallery() {
         </div>
 
         {/* Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-            gap: '6px',
-          }}
-        >
+        <div className="pm-gallery-grid">
+          <style>{`
+            .pm-gallery-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+              gap: 6px;
+            }
+            @media (max-width: 640px) {
+              .pm-gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+              }
+            }
+          `}</style>
           {filtered.map((item) => (
             <div
               key={item.id}
