@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 \"C:\\\\Users\\\\USER\\\\.claude\\\\plugins\\\\marketplaces\\\\ui-ux-pro-max-skill\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"construction interior finishing professional minimalist\" --design-system -p \"Bauunternehmen\" -f markdown)",
+      "PowerShell(python \"C:\\\\Users\\\\USER\\\\.claude\\\\plugins\\\\marketplaces\\\\ui-ux-pro-max-skill\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"construction interior finishing professional minimalist\" --design-system -p \"Bauunternehmen\" -f markdown 2>&1)"
+    ]
+  }
+}
