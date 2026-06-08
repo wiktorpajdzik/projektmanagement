@@ -1,375 +1,346 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
-import { X, ZoomIn } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLang } from '@/contexts/LanguageContext';
 
-type CategoryKey = 'Alle' | 'Trockenbau' | 'Putzarbeiten' | 'Fliesenlegen' | 'Malerarbeiten' | 'Komplettausbau';
+type CategoryKey = 'Fliesenlegen' | 'Komplettausbau' | 'Trockenbau' | 'Putzarbeiten' | 'Malerarbeiten';
 
 interface GalleryItem {
   id: number;
   src: string;
-  de: string;
-  en: string;
-  pl: string;
-  cat: CategoryKey;
+  de: string; en: string; pl: string;
 }
 
-const ITEMS: GalleryItem[] = [
-  { id: 1,  src: '/images/gallery/de.jpg',     de: 'Trockenbau – Badezimmer',          en: 'Drywall – Bathroom',          pl: 'Karton-gips – Łazienka',        cat: 'Trockenbau' },
-  { id: 2,  src: '/images/gallery/de-2.jpg',   de: 'Trockenbau – Rigips-Wand',         en: 'Drywall – Plasterboard Wall',  pl: 'Karton-gips – Ściana GK',       cat: 'Trockenbau' },
-  { id: 3,  src: '/images/gallery/de-3.jpg',   de: 'Trockenbau – Ständerwerk',         en: 'Drywall – Steel Frame',        pl: 'Karton-gips – Szkielet',        cat: 'Trockenbau' },
-  { id: 4,  src: '/images/gallery/de-4.jpg',   de: 'Trockenbau – Verspachtelung',      en: 'Drywall – Jointing',           pl: 'Karton-gips – Szpachlowanie',   cat: 'Trockenbau' },
-  { id: 5,  src: '/images/gallery/de-5.jpg',   de: 'Putzarbeiten – Außenputz',         en: 'Plastering – Exterior',        pl: 'Tynkowanie – Zewnętrzne',       cat: 'Putzarbeiten' },
-  { id: 6,  src: '/images/gallery/de-6.jpg',   de: 'Fliesenlegen – Bodenfliesen',      en: 'Tiling – Floor Tiles',         pl: 'Płytki – Podłoga',              cat: 'Fliesenlegen' },
-  { id: 7,  src: '/images/gallery/de-7.jpg',   de: 'Fliesenlegen – Verlegung',         en: 'Tiling – Laying in progress',  pl: 'Płytki – Układanie',            cat: 'Fliesenlegen' },
-  { id: 8,  src: '/images/gallery/de-8.jpg',   de: 'Putzarbeiten – Innenputz',         en: 'Plastering – Interior',        pl: 'Tynkowanie – Wewnętrzne',       cat: 'Putzarbeiten' },
-  { id: 9,  src: '/images/gallery/de-9.jpg',   de: 'Trockenbau – Fugenspachtel',       en: 'Drywall – Taping',             pl: 'Karton-gips – Fugowanie',       cat: 'Trockenbau' },
-  { id: 10, src: '/images/gallery/de-10.jpg',  de: 'Trockenbau – Eckverspachtelung',   en: 'Drywall – Corner Jointing',    pl: 'Karton-gips – Narożniki',       cat: 'Trockenbau' },
-  { id: 11, src: '/images/gallery/de-11.jpg',  de: 'Komplettausbau – Dachgeschoss',    en: 'Fit-Out – Attic Floor',        pl: 'Pod klucz – Poddasze',          cat: 'Komplettausbau' },
-  { id: 12, src: '/images/gallery/de-12.jpg',  de: 'Komplettausbau – Treppenhaus',     en: 'Fit-Out – Staircase',          pl: 'Pod klucz – Klatka schodowa',   cat: 'Komplettausbau' },
-  { id: 13, src: '/images/gallery/de-13.jpg',  de: 'Komplettausbau – Badezimmer',      en: 'Fit-Out – Bathroom',           pl: 'Pod klucz – Łazienka',          cat: 'Komplettausbau' },
-  { id: 14, src: '/images/gallery/de-14.jpg',  de: 'Komplettausbau – Sauna',           en: 'Fit-Out – Sauna',              pl: 'Pod klucz – Sauna',             cat: 'Komplettausbau' },
-  { id: 15, src: '/images/gallery/de-15.jpg',  de: 'Malerarbeiten – Ziegelwand',       en: 'Painting – Brick Wall Finish', pl: 'Malowanie – Ściana ceglana',    cat: 'Malerarbeiten' },
-  { id: 16, src: '/images/gallery/de-16.jpg',  de: 'Komplettausbau – Dachbad',         en: 'Fit-Out – Attic Bathroom',     pl: 'Pod klucz – Łazienka poddasze', cat: 'Komplettausbau' },
-  { id: 17, src: '/images/gallery/de-17.jpg',  de: 'Komplettausbau – Holzdecke',       en: 'Fit-Out – Wooden Ceiling',     pl: 'Pod klucz – Drewniany sufit',   cat: 'Komplettausbau' },
-  { id: 18, src: '/images/gallery/de-18.jpg',  de: 'Fliesenlegen – Dekorwand Bad',     en: 'Tiling – Decorative Wall',     pl: 'Płytki – Ściana dekoracyjna',   cat: 'Fliesenlegen' },
-  { id: 19, src: '/images/gallery/de-19.jpg',  de: 'Fliesenlegen – Großformat',        en: 'Tiling – Large Format',        pl: 'Płytki – Wielkoformatowe',      cat: 'Fliesenlegen' },
-  { id: 20, src: '/images/gallery/de-20.jpg',  de: 'Komplettausbau – Premiumduschen',  en: 'Fit-Out – Premium Shower',     pl: 'Pod klucz – Premium prysznic',  cat: 'Komplettausbau' },
-  { id: 21, src: '/images/gallery/de-21.jpg',  de: 'Fliesenlegen – Marmor Flur',       en: 'Tiling – Marble Hallway',      pl: 'Płytki – Marmurowy korytarz',   cat: 'Fliesenlegen' },
-  { id: 22, src: '/images/gallery/de-22.jpg',  de: 'Fliesenlegen – Badezimmer',        en: 'Tiling – Bathroom',            pl: 'Płytki – Łazienka',             cat: 'Fliesenlegen' },
-  { id: 23, src: '/images/gallery/de-23.jpg',  de: 'Fliesenlegen – Naturstein außen',  en: 'Tiling – Exterior Stonework',  pl: 'Płytki – Kamień zewnętrzny',    cat: 'Fliesenlegen' },
-  { id: 24, src: '/images/gallery/de-24.jpg',  de: 'Fliesenlegen – Garagenboden',      en: 'Tiling – Garage Floor',        pl: 'Płytki – Podłoga garażu',       cat: 'Fliesenlegen' },
-  { id: 25, src: '/images/gallery/de-25.jpg',  de: 'Fliesenlegen – Schwarzer Marmor',  en: 'Tiling – Black Marble',        pl: 'Płytki – Czarny marmur',        cat: 'Fliesenlegen' },
-  { id: 26, src: '/images/gallery/de-26.jpg',  de: 'Fliesenlegen – Kontrast-Design',   en: 'Tiling – Contrast Design',     pl: 'Płytki – Kontrast design',      cat: 'Fliesenlegen' },
+interface Category {
+  key: CategoryKey;
+  de: string; en: string; pl: string;
+  cover: string;
+  items: GalleryItem[];
+}
+
+const CATEGORIES: Category[] = [
+  {
+    key: 'Fliesenlegen', de: 'Fliesenlegen', en: 'Tiling', pl: 'Płytki',
+    cover: '/images/gallery/fliesenlegen/5.jpg',
+    items: [
+      { id: 1,  src: '/images/gallery/fliesenlegen/1.jpg',  de: 'Bodenfliesen',      en: 'Floor Tiles',       pl: 'Podłoga' },
+      { id: 2,  src: '/images/gallery/fliesenlegen/2.jpg',  de: 'Verlegung',         en: 'Laying',            pl: 'Układanie' },
+      { id: 3,  src: '/images/gallery/fliesenlegen/3.jpg',  de: 'Dekorwand Bad',     en: 'Decorative Wall',   pl: 'Ściana dekoracyjna' },
+      { id: 4,  src: '/images/gallery/fliesenlegen/4.jpg',  de: 'Großformat',        en: 'Large Format',      pl: 'Wielkoformatowe' },
+      { id: 5,  src: '/images/gallery/fliesenlegen/5.jpg',  de: 'Marmor Flur',       en: 'Marble Hallway',    pl: 'Marmurowy korytarz' },
+      { id: 6,  src: '/images/gallery/fliesenlegen/6.jpg',  de: 'Badezimmer',        en: 'Bathroom',          pl: 'Łazienka' },
+      { id: 7,  src: '/images/gallery/fliesenlegen/7.jpg',  de: 'Naturstein außen',  en: 'Stonework',         pl: 'Kamień zewnętrzny' },
+      { id: 8,  src: '/images/gallery/fliesenlegen/8.jpg',  de: 'Garagenboden',      en: 'Garage Floor',      pl: 'Podłoga garażu' },
+      { id: 9,  src: '/images/gallery/fliesenlegen/9.jpg',  de: 'Schwarzer Marmor',  en: 'Black Marble',      pl: 'Czarny marmur' },
+      { id: 10, src: '/images/gallery/fliesenlegen/10.jpg', de: 'Kontrast-Design',   en: 'Contrast Design',   pl: 'Kontrast design' },
+    ],
+  },
+  {
+    key: 'Komplettausbau', de: 'Komplettausbau', en: 'Fit-Out', pl: 'Pod klucz',
+    cover: '/images/gallery/komplettausbau/3.jpg',
+    items: [
+      { id: 1, src: '/images/gallery/komplettausbau/1.jpg', de: 'Dachgeschoss',   en: 'Attic Floor',     pl: 'Poddasze' },
+      { id: 2, src: '/images/gallery/komplettausbau/2.jpg', de: 'Treppenhaus',    en: 'Staircase',       pl: 'Klatka schodowa' },
+      { id: 3, src: '/images/gallery/komplettausbau/3.jpg', de: 'Badezimmer',     en: 'Bathroom',        pl: 'Łazienka' },
+      { id: 4, src: '/images/gallery/komplettausbau/4.jpg', de: 'Sauna',          en: 'Sauna',           pl: 'Sauna' },
+      { id: 5, src: '/images/gallery/komplettausbau/5.jpg', de: 'Dachbad',        en: 'Attic Bathroom',  pl: 'Łazienka poddasze' },
+      { id: 6, src: '/images/gallery/komplettausbau/6.jpg', de: 'Holzdecke',      en: 'Wooden Ceiling',  pl: 'Drewniany sufit' },
+      { id: 7, src: '/images/gallery/komplettausbau/7.jpg', de: 'Premiumdusche',  en: 'Premium Shower',  pl: 'Premium prysznic' },
+    ],
+  },
+  {
+    key: 'Trockenbau', de: 'Trockenbau', en: 'Drywall', pl: 'Karton-gips',
+    cover: '/images/gallery/trockenbau/1.jpg',
+    items: [
+      { id: 1, src: '/images/gallery/trockenbau/1.jpg', de: 'Badezimmer',        en: 'Bathroom',          pl: 'Łazienka' },
+      { id: 2, src: '/images/gallery/trockenbau/2.jpg', de: 'Rigips-Wand',       en: 'Plasterboard Wall', pl: 'Ściana GK' },
+      { id: 3, src: '/images/gallery/trockenbau/3.jpg', de: 'Ständerwerk',       en: 'Steel Frame',       pl: 'Szkielet' },
+      { id: 4, src: '/images/gallery/trockenbau/4.jpg', de: 'Verspachtelung',    en: 'Jointing',          pl: 'Szpachlowanie' },
+      { id: 5, src: '/images/gallery/trockenbau/5.jpg', de: 'Fugenspachtel',     en: 'Taping',            pl: 'Fugowanie' },
+      { id: 6, src: '/images/gallery/trockenbau/6.jpg', de: 'Eckverspachtelung', en: 'Corner Jointing',   pl: 'Narożniki' },
+    ],
+  },
+  {
+    key: 'Putzarbeiten', de: 'Putzarbeiten', en: 'Plastering', pl: 'Tynkowanie',
+    cover: '/images/gallery/putzarbeiten/1.jpg',
+    items: [
+      { id: 1, src: '/images/gallery/putzarbeiten/1.jpg', de: 'Außenputz', en: 'Exterior Plaster', pl: 'Tynk zewnętrzny' },
+      { id: 2, src: '/images/gallery/putzarbeiten/2.jpg', de: 'Innenputz', en: 'Interior Plaster', pl: 'Tynk wewnętrzny' },
+    ],
+  },
+  {
+    key: 'Malerarbeiten', de: 'Malerarbeiten', en: 'Painting', pl: 'Malowanie',
+    cover: '/images/gallery/malerarbeiten/1.jpg',
+    items: [
+      { id: 1, src: '/images/gallery/malerarbeiten/1.jpg', de: 'Ziegelwand', en: 'Brick Wall Finish', pl: 'Ściana ceglana' },
+    ],
+  },
 ];
 
-const CATS: { key: CategoryKey | 'Alle'; de: string; en: string; pl: string }[] = [
-  { key: 'Alle',          de: 'Alle',          en: 'All',        pl: 'Wszystkie' },
-  { key: 'Fliesenlegen',  de: 'Fliesen',       en: 'Tiling',     pl: 'Płytki' },
-  { key: 'Trockenbau',    de: 'Trockenbau',    en: 'Drywall',    pl: 'Karton-gips' },
-  { key: 'Komplettausbau',de: 'Komplettausbau',en: 'Fit-Out',    pl: 'Pod klucz' },
-  { key: 'Putzarbeiten',  de: 'Putz',          en: 'Plastering', pl: 'Tynk' },
-  { key: 'Malerarbeiten', de: 'Malerei',       en: 'Painting',   pl: 'Malowanie' },
-];
+interface PopupState { cat: Category; lightboxId: number | null; }
 
 export default function Gallery() {
   const { lang, t } = useLang();
-  const [active, setActive] = useState<CategoryKey | 'Alle'>('Alle');
-  const [lightbox, setLightbox] = useState<GalleryItem | null>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [popup, setPopup] = useState<PopupState | null>(null);
 
-  const filtered = active === 'Alle' ? ITEMS : ITEMS.filter((i) => i.cat === active);
+  const getCatName = (c: Category) => lang === 'en' ? c.en : lang === 'pl' ? c.pl : c.de;
+  const getLabel   = (item: GalleryItem) => lang === 'en' ? item.en : lang === 'pl' ? item.pl : item.de;
 
-  const getLabel = (item: GalleryItem) => {
-    if (lang === 'en') return item.en;
-    if (lang === 'pl') return item.pl;
-    return item.de;
+  const scroll = (dir: 'left' | 'right') => {
+    sliderRef.current?.scrollBy({ left: dir === 'right' ? 340 : -340, behavior: 'smooth' });
   };
 
-  const getCatLabel = (c: typeof CATS[0]) => {
-    if (lang === 'en') return c.en;
-    if (lang === 'pl') return c.pl;
-    return c.de;
-  };
+  const openPopup = (cat: Category) => setPopup({ cat, lightboxId: null });
+  const closePopup = () => setPopup(null);
+  const openLightbox = (id: number) => setPopup(p => p ? { ...p, lightboxId: id } : null);
+  const closeLightbox = () => setPopup(p => p ? { ...p, lightboxId: null } : null);
+
+  const lbItems  = popup?.cat.items ?? [];
+  const lbIdx    = popup?.lightboxId != null ? lbItems.findIndex(i => i.id === popup.lightboxId) : -1;
+  const lbItem   = lbIdx >= 0 ? lbItems[lbIdx] : null;
+
+  const goPrev = () => { if (lbIdx > 0) openLightbox(lbItems[lbIdx - 1].id); };
+  const goNext = () => { if (lbIdx < lbItems.length - 1) openLightbox(lbItems[lbIdx + 1].id); };
 
   return (
-    <section id="galerie" style={{ background: '#F8FAFC', padding: '100px 0' }}>
-      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
-        {/* Header */}
-        <div style={{ marginBottom: '48px' }}>
+    <section id="galerie" style={{ background: '#0F0F0F', padding: '120px 0' }}>
+
+      {/* Header */}
+      <div className="pm-gallery-header" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px 56px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px' }}>
+        <div>
           <p style={labelStyle}>{t.nav.gallery}</p>
           <h2 style={headingStyle}>{t.gallery.heading}</h2>
-          <p style={subStyle}>{t.gallery.subheading}</p>
+          <div style={{ width: '60px', height: '2px', background: '#C4A44A', marginTop: '16px' }} />
         </div>
-
-        {/* Category filter */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '40px' }}>
-          {CATS.map((c) => {
-            const isActive = active === c.key;
-            return (
-              <button
-                key={c.key}
-                onClick={() => setActive(c.key as CategoryKey | 'Alle')}
-                style={{
-                  padding: '8px 18px',
-                  fontFamily: "'Jost', sans-serif",
-                  fontWeight: 500,
-                  fontSize: '13px',
-                  letterSpacing: '0.04em',
-                  border: `1px solid ${isActive ? '#EA580C' : '#E2E8F0'}`,
-                  background: isActive ? '#EA580C' : '#FFFFFF',
-                  color: isActive ? '#fff' : '#64748B',
-                  cursor: 'pointer',
-                  transition: 'all 200ms',
-                  borderRadius: 0,
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = '#EA580C';
-                    (e.currentTarget as HTMLButtonElement).style.color = '#EA580C';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = '#E2E8F0';
-                    (e.currentTarget as HTMLButtonElement).style.color = '#64748B';
-                  }
-                }}
-              >
-                {getCatLabel(c)}
-                {c.key !== 'Alle' && (
-                  <span style={{ marginLeft: '6px', opacity: 0.6, fontSize: '11px' }}>
-                    ({ITEMS.filter((i) => i.cat === c.key).length})
-                  </span>
-                )}
-              </button>
-            );
-          })}
+        {/* Arrows */}
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button onClick={() => scroll('left')} aria-label="Zurück" style={arrowBtn}>
+            <ChevronLeft size={18} />
+          </button>
+          <button onClick={() => scroll('right')} aria-label="Weiter" style={arrowBtn}>
+            <ChevronRight size={18} />
+          </button>
         </div>
-
-        {/* Grid */}
-        <div className="pm-gallery-grid">
-          <style>{`
-            .pm-gallery-grid {
-              display: grid;
-              grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-              gap: 6px;
-            }
-            @media (max-width: 640px) {
-              .pm-gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-              }
-            }
-          `}</style>
-          {filtered.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => setLightbox(item)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === 'Enter' && setLightbox(item)}
-              aria-label={getLabel(item)}
-              style={{
-                position: 'relative',
-                aspectRatio: '4/3',
-                overflow: 'hidden',
-                cursor: 'pointer',
-                background: '#E2E8F0',
-              }}
-              onMouseEnter={(e) => {
-                const ov = e.currentTarget.querySelector('.ov') as HTMLElement;
-                const img = e.currentTarget.querySelector('img') as HTMLImageElement;
-                if (ov) ov.style.opacity = '1';
-                if (img) img.style.transform = 'scale(1.04)';
-              }}
-              onMouseLeave={(e) => {
-                const ov = e.currentTarget.querySelector('.ov') as HTMLElement;
-                const img = e.currentTarget.querySelector('img') as HTMLImageElement;
-                if (ov) ov.style.opacity = '0';
-                if (img) img.style.transform = 'scale(1)';
-              }}
-            >
-              <Image
-                src={item.src}
-                alt={getLabel(item)}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                style={{ objectFit: 'cover', transition: 'transform 400ms' }}
-              />
-              {/* Overlay */}
-              <div
-                className="ov"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'rgba(234,88,12,0.82)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  opacity: 0,
-                  transition: 'opacity 220ms',
-                  padding: '16px',
-                }}
-              >
-                <ZoomIn size={26} color="#fff" strokeWidth={1.5} />
-                <span style={{ fontFamily: "'Jost', sans-serif", fontSize: '12px', fontWeight: 500, color: '#fff', letterSpacing: '0.08em', textTransform: 'uppercase', textAlign: 'center', lineHeight: 1.4 }}>
-                  {getLabel(item)}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Count */}
-        <p style={{ fontFamily: "'Jost', sans-serif", fontSize: '13px', color: '#94A3B8', marginTop: '24px', textAlign: 'right' }}>
-          {filtered.length} / {ITEMS.length}
-        </p>
       </div>
 
-      {/* Lightbox */}
-      {lightbox && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={getLabel(lightbox)}
-          onClick={() => setLightbox(null)}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(15,23,42,0.95)',
-            zIndex: 200,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '24px',
-          }}
-        >
-          {/* Close */}
+      {/* Slider — full bleed, cards uniform 1:1 */}
+      <div
+        ref={sliderRef}
+        style={{
+          display: 'flex',
+          overflowX: 'auto',
+          scrollSnapType: 'x mandatory',
+          gap: '4px',
+          padding: '0 24px',
+          scrollbarWidth: 'none',
+        }}
+        className="pm-hide-sb"
+      >
+        {CATEGORIES.map((cat) => (
           <button
-            onClick={() => setLightbox(null)}
-            aria-label="Schließen"
+            key={cat.key}
+            onClick={() => openPopup(cat)}
+            aria-label={getCatName(cat)}
             style={{
-              position: 'fixed',
-              top: '20px',
-              right: '20px',
-              background: 'rgba(255,255,255,0.1)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              borderRadius: '50%',
-              width: '44px',
-              height: '44px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              color: '#fff',
-              zIndex: 201,
-            }}
-          >
-            <X size={20} />
-          </button>
-
-          {/* Image */}
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
+              flexShrink: 0,
+              width: 'clamp(240px, 28vw, 360px)',
+              aspectRatio: '1 / 1',
+              scrollSnapAlign: 'start',
               position: 'relative',
-              width: '100%',
-              maxWidth: '900px',
-              maxHeight: '85dvh',
-              aspectRatio: '4/3',
+              overflow: 'hidden',
+              cursor: 'pointer',
+              border: 'none',
+              padding: 0,
+              background: '#1A1A1A',
+              display: 'block',
+            }}
+            onMouseEnter={(e) => {
+              const img = e.currentTarget.querySelector('img') as HTMLImageElement;
+              const ov  = e.currentTarget.querySelector('.cat-ov') as HTMLElement;
+              if (img) img.style.transform = 'scale(1.07)';
+              if (ov)  ov.style.opacity    = '1';
+            }}
+            onMouseLeave={(e) => {
+              const img = e.currentTarget.querySelector('img') as HTMLImageElement;
+              const ov  = e.currentTarget.querySelector('.cat-ov') as HTMLElement;
+              if (img) img.style.transform = 'scale(1)';
+              if (ov)  ov.style.opacity    = '0';
             }}
           >
             <Image
-              src={lightbox.src}
-              alt={getLabel(lightbox)}
-              fill
-              sizes="900px"
-              style={{ objectFit: 'contain' }}
-              priority
+              src={cat.cover}
+              alt={getCatName(cat)}
+              fill sizes="360px"
+              style={{ objectFit: 'cover', transition: 'transform 600ms cubic-bezier(0.25,0.46,0.45,0.94)' }}
             />
-            {/* Caption */}
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '-40px',
-                left: 0,
-                right: 0,
-                textAlign: 'center',
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: "'Jost', sans-serif",
-                  fontSize: '13px',
-                  color: '#64748B',
-                  letterSpacing: '0.06em',
-                }}
+
+            {/* Permanent bottom gradient */}
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.2) 55%, transparent 100%)', pointerEvents: 'none' }} />
+
+            {/* Hover tint */}
+            <div className="cat-ov" style={{ position: 'absolute', inset: 0, background: 'rgba(196,164,74,0.12)', borderTop: '3px solid #C4A44A', opacity: 0, transition: 'opacity 280ms', pointerEvents: 'none' }} />
+
+            {/* Text */}
+            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px 22px' }}>
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#C4A44A', marginBottom: '6px' }}>
+                {cat.items.length} {lang === 'pl' ? 'zdjęć' : lang === 'en' ? 'photos' : 'Fotos'}
+              </p>
+              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(1.3rem, 2vw, 1.7rem)', fontWeight: 600, color: '#F9F7F4', lineHeight: 1.1 }}>
+                {getCatName(cat)}
+              </h3>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {/* ── POPUP ── */}
+      {popup && !lbItem && (
+        <div
+          onClick={closePopup}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 200,
+            background: 'rgba(5,5,5,0.92)',
+            backdropFilter: 'blur(6px)',
+            display: 'flex', flexDirection: 'column',
+            overflowY: 'auto',
+          }}
+        >
+          <div onClick={e => e.stopPropagation()} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+
+            {/* Popup header */}
+            <div style={{ padding: '28px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(196,164,74,0.15)', background: 'rgba(10,10,10,0.8)', position: 'sticky', top: 0, zIndex: 10 }}>
+              <div>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#C4A44A', marginBottom: '4px' }}>
+                  {popup.cat.items.length} {lang === 'pl' ? 'zdjęć' : lang === 'en' ? 'photos' : 'Fotos'}
+                </p>
+                <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', fontWeight: 600, color: '#F9F7F4', lineHeight: 1 }}>
+                  {getCatName(popup.cat)}
+                </h2>
+              </div>
+              <button
+                onClick={closePopup}
+                style={{ background: 'transparent', border: '1px solid rgba(196,164,74,0.3)', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#C4A44A', flexShrink: 0 }}
+                aria-label="Schließen"
               >
-                {getLabel(lightbox)}
-              </span>
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Photo grid */}
+            <div className="pm-popup-grid" style={{ padding: '4px' }}>
+              {popup.cat.items.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => openLightbox(item.id)}
+                  style={{ position: 'relative', aspectRatio: '1 / 1', overflow: 'hidden', cursor: 'pointer', background: '#1A1A1A', border: 'none', padding: 0, display: 'block', width: '100%' }}
+                  onMouseEnter={(e) => {
+                    const img = e.currentTarget.querySelector('img') as HTMLImageElement;
+                    const ov  = e.currentTarget.querySelector('.ov') as HTMLElement;
+                    if (img) img.style.transform = 'scale(1.07)';
+                    if (ov)  ov.style.opacity    = '1';
+                  }}
+                  onMouseLeave={(e) => {
+                    const img = e.currentTarget.querySelector('img') as HTMLImageElement;
+                    const ov  = e.currentTarget.querySelector('.ov') as HTMLElement;
+                    if (img) img.style.transform = 'scale(1)';
+                    if (ov)  ov.style.opacity    = '0';
+                  }}
+                  aria-label={getLabel(item)}
+                >
+                  <Image src={item.src} alt={getLabel(item)} fill sizes="(max-width:640px) 50vw, 25vw" style={{ objectFit: 'cover', transition: 'transform 500ms cubic-bezier(0.25,0.46,0.45,0.94)' }} />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,10,10,0.7) 0%, transparent 50%)', pointerEvents: 'none' }} />
+                  <div style={{ position: 'absolute', bottom: '10px', left: '12px', right: '12px' }}>
+                    <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '10px', color: 'rgba(249,247,244,0.6)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{getLabel(item)}</span>
+                  </div>
+                  <div className="ov" style={{ position: 'absolute', inset: 0, background: 'rgba(10,10,10,0.4)', borderBottom: '3px solid #C4A44A', opacity: 0, transition: 'opacity 250ms' }} />
+                </button>
+              ))}
             </div>
           </div>
-
-          {/* Prev / Next */}
-          {(() => {
-            const idx = filtered.findIndex((i) => i.id === lightbox.id);
-            const prev = filtered[idx - 1];
-            const next = filtered[idx + 1];
-            return (
-              <>
-                {prev && (
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setLightbox(prev); }}
-                    style={navBtn('left')}
-                    aria-label="Vorheriges Bild"
-                  >
-                    ‹
-                  </button>
-                )}
-                {next && (
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setLightbox(next); }}
-                    style={navBtn('right')}
-                    aria-label="Nächstes Bild"
-                  >
-                    ›
-                  </button>
-                )}
-              </>
-            );
-          })()}
         </div>
       )}
+
+      {/* ── LIGHTBOX ── */}
+      {popup && lbItem && (
+        <div
+          onClick={closeLightbox}
+          style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'rgba(5,5,5,0.97)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}
+        >
+          {/* Top bar */}
+          <div style={{ position: 'fixed', top: 0, left: 0, right: 0, padding: '20px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', zIndex: 301, background: 'linear-gradient(to bottom, rgba(5,5,5,0.9), transparent)' }}>
+            <div>
+              <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: '15px', color: '#C4A44A' }}>{getCatName(popup.cat)}</span>
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '11px', color: '#555550', marginLeft: '14px', letterSpacing: '0.1em' }}>{lbIdx + 1} / {lbItems.length}</span>
+            </div>
+            <button onClick={closeLightbox} style={{ background: 'transparent', border: '1px solid rgba(196,164,74,0.3)', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#C4A44A' }}>
+              <X size={16} />
+            </button>
+          </div>
+
+          {/* Image */}
+          <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', maxWidth: '1000px', maxHeight: '76dvh', aspectRatio: '4/3' }}>
+            <Image src={lbItem.src} alt={getLabel(lbItem)} fill sizes="1000px" style={{ objectFit: 'contain' }} priority />
+          </div>
+
+          {/* Thumbnail strip */}
+          <div className="pm-hide-sb" style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '3px', zIndex: 301, maxWidth: '90vw', overflowX: 'auto', scrollbarWidth: 'none' }}>
+            {lbItems.map((item, i) => (
+              <button key={item.id} onClick={e => { e.stopPropagation(); openLightbox(item.id); }} style={{ position: 'relative', width: '52px', height: '52px', flexShrink: 0, border: `2px solid ${i === lbIdx ? '#C4A44A' : 'transparent'}`, padding: 0, cursor: 'pointer', background: '#1A1A1A', opacity: i === lbIdx ? 1 : 0.4, transition: 'opacity 200ms, border-color 200ms' }}>
+                <Image src={item.src} alt="" fill sizes="52px" style={{ objectFit: 'cover' }} />
+              </button>
+            ))}
+          </div>
+
+          {/* Nav */}
+          {lbIdx > 0 && (
+            <button onClick={e => { e.stopPropagation(); goPrev(); }} style={navBtn('left')}><ChevronLeft size={22} /></button>
+          )}
+          {lbIdx < lbItems.length - 1 && (
+            <button onClick={e => { e.stopPropagation(); goNext(); }} style={navBtn('right')}><ChevronRight size={22} /></button>
+          )}
+        </div>
+      )}
+
+      <style>{`
+        .pm-hide-sb::-webkit-scrollbar { display: none; }
+        .pm-popup-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 4px;
+        }
+        @media (max-width: 900px)  { .pm-popup-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 540px)  { .pm-popup-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) {
+          #galerie { padding: 80px 0 !important; }
+          .pm-gallery-header { flex-direction: column !important; align-items: flex-start !important; gap: 16px !important; padding-bottom: 40px !important; }
+        }
+      `}</style>
     </section>
   );
 }
 
 const navBtn = (side: 'left' | 'right'): React.CSSProperties => ({
-  position: 'fixed',
-  top: '50%',
-  [side]: '16px',
-  transform: 'translateY(-50%)',
-  background: 'rgba(255,255,255,0.08)',
-  border: '1px solid rgba(255,255,255,0.15)',
-  color: '#fff',
-  fontSize: '2rem',
-  lineHeight: 1,
-  width: '48px',
-  height: '48px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  cursor: 'pointer',
-  zIndex: 202,
-  transition: 'background 200ms',
+  position: 'fixed', top: '50%', [side]: '20px', transform: 'translateY(-50%)',
+  background: 'transparent', border: '1px solid rgba(196,164,74,0.25)', color: '#C4A44A',
+  width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+  cursor: 'pointer', zIndex: 302,
 });
 
+const arrowBtn: React.CSSProperties = {
+  background: 'transparent', border: '1px solid rgba(196,164,74,0.25)',
+  width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+  cursor: 'pointer', color: '#888880',
+};
+
 const labelStyle: React.CSSProperties = {
-  fontFamily: "'Jost', sans-serif",
-  fontWeight: 500,
-  fontSize: '12px',
-  letterSpacing: '0.2em',
-  textTransform: 'uppercase',
-  color: '#EA580C',
-  marginBottom: '12px',
+  fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: '11px',
+  letterSpacing: '0.28em', textTransform: 'uppercase', color: '#C4A44A', marginBottom: '14px',
 };
 
 const headingStyle: React.CSSProperties = {
-  fontFamily: "'Bodoni Moda', serif",
-  fontSize: 'clamp(2rem, 3.5vw, 3rem)',
-  fontWeight: 700,
-  color: '#0F172A',
-  marginBottom: '16px',
-};
-
-const subStyle: React.CSSProperties = {
-  fontFamily: "'Jost', sans-serif",
-  fontSize: '17px',
-  fontWeight: 300,
-  color: '#64748B',
-  maxWidth: '540px',
-  lineHeight: 1.7,
+  fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2.4rem, 4vw, 3.6rem)',
+  fontWeight: 600, color: '#F9F7F4', lineHeight: 1.1,
 };

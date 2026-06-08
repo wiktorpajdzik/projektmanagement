@@ -6,10 +6,10 @@ import Image from 'next/image';
 import { useLang } from '@/contexts/LanguageContext';
 import { Lang } from '@/lib/translations';
 
-const FLAGS: { lang: Lang; flag: string; label: string }[] = [
-  { lang: 'de', flag: '🇩🇪', label: 'DE' },
-  { lang: 'en', flag: '🇬🇧', label: 'EN' },
-  { lang: 'pl', flag: '🇵🇱', label: 'PL' },
+const FLAGS: { lang: Lang; label: string }[] = [
+  { lang: 'de', label: 'DE' },
+  { lang: 'en', label: 'EN' },
+  { lang: 'pl', label: 'PL' },
 ];
 
 export default function Navbar() {
@@ -18,7 +18,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -37,92 +37,112 @@ export default function Navbar() {
     el?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const navBg = scrolled || open ? '#fff' : 'transparent';
-  const navShadow = scrolled ? '0 1px 0 #E2E8F0' : 'none';
+  const scrolledBg = 'rgba(10,10,10,0.97)';
+  const heroBg = 'transparent';
 
   return (
     <header
-      style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, transition: 'background 250ms, box-shadow 250ms', background: navBg, boxShadow: navShadow }}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 100,
+        transition: 'background 300ms, backdrop-filter 300ms, border-color 300ms',
+        background: scrolled || open ? scrolledBg : heroBg,
+        backdropFilter: scrolled || open ? 'blur(12px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(196,164,74,0.15)' : '1px solid transparent',
+      }}
       role="banner"
     >
       <nav
-        style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px', height: '68px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+        style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: '0 24px',
+          height: '72px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
         aria-label="Main navigation"
       >
         {/* Logo */}
         <button
           onClick={() => handleNav('#home')}
-          style={{ position: 'relative', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0', height: '40px', width: '200px' }}
+          style={{ position: 'relative', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0', height: '38px', width: '190px' }}
           aria-label="ProjektManagement – zur Startseite"
         >
-          {/* White logo — visible on dark hero */}
           <Image
             src="/logo_white.png"
             alt="ProjektManagement"
             fill
-            style={{
-              objectFit: 'contain',
-              objectPosition: 'left center',
-              transition: 'opacity 250ms',
-              opacity: scrolled || open ? 0 : 1,
-            }}
-            priority
-          />
-          {/* Black logo — visible after scroll */}
-          <Image
-            src="/logo_black.png"
-            alt="ProjektManagement"
-            fill
-            style={{
-              objectFit: 'contain',
-              objectPosition: 'left center',
-              transition: 'opacity 250ms',
-              opacity: scrolled || open ? 1 : 0,
-            }}
+            style={{ objectFit: 'contain', objectPosition: 'left center' }}
             priority
           />
         </button>
 
         {/* Desktop nav */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }} className="pm-hidden-mobile">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '36px' }} className="pm-hidden-mobile">
           {navLinks.map((l) => (
             <button
               key={l.href}
               onClick={() => handleNav(l.href)}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Jost', sans-serif", fontWeight: 500, fontSize: '15px', color: scrolled ? '#334155' : '#F8FAFC', letterSpacing: '0.02em', padding: '4px 0', transition: 'color 200ms' }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = '#EA580C')}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = scrolled ? '#334155' : '#F8FAFC')}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: "'DM Sans', sans-serif",
+                fontWeight: 400,
+                fontSize: '13px',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: '#888880',
+                padding: '4px 0',
+                transition: 'color 200ms',
+              }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = '#C4A44A')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = '#888880')}
             >
               {l.label}
             </button>
           ))}
 
-          {/* Language switcher – desktop */}
-          <div style={{ display: 'flex', gap: '4px', marginLeft: '8px', borderLeft: `1px solid ${scrolled ? '#E2E8F0' : 'rgba(255,255,255,0.2)'}`, paddingLeft: '16px' }}>
-            {FLAGS.map(({ lang: l, label }) => (
-              <button
-                key={l}
-                onClick={() => setLang(l)}
-                aria-label={`Sprache: ${label}`}
-                style={{
-                  background: lang === l ? '#EA580C' : 'transparent',
-                  border: `1px solid ${lang === l ? '#EA580C' : 'rgba(255,255,255,0.25)'}`,
-                  borderRadius: 0,
-                  padding: '4px 10px',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  letterSpacing: '0.08em',
-                  color: lang === l ? '#fff' : (scrolled ? '#64748B' : 'rgba(255,255,255,0.7)'),
-                  cursor: 'pointer',
-                  transition: 'all 200ms',
-                  minHeight: '30px',
-                }}
-                onMouseEnter={(e) => { if (lang !== l) { (e.currentTarget as HTMLButtonElement).style.borderColor = '#EA580C'; (e.currentTarget as HTMLButtonElement).style.color = '#EA580C'; } }}
-                onMouseLeave={(e) => { if (lang !== l) { (e.currentTarget as HTMLButtonElement).style.borderColor = scrolled ? '#E2E8F0' : 'rgba(255,255,255,0.25)'; (e.currentTarget as HTMLButtonElement).style.color = scrolled ? '#64748B' : 'rgba(255,255,255,0.7)'; } }}
-              >
-                {label}
-              </button>
-            ))}
+          {/* Lang switcher */}
+          <div style={{ display: 'flex', gap: '0', marginLeft: '8px', borderLeft: '1px solid rgba(196,164,74,0.15)', paddingLeft: '20px' }}>
+            {FLAGS.map(({ lang: l, label }) => {
+              const isActive = lang === l;
+              return (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  aria-label={`Sprache: ${label}`}
+                  style={{
+                    background: isActive ? '#C4A44A' : 'transparent',
+                    border: 'none',
+                    borderBottom: isActive ? '2px solid #C4A44A' : '2px solid transparent',
+                    padding: '6px 12px',
+                    fontSize: '11px',
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontWeight: isActive ? 600 : 400,
+                    letterSpacing: '0.12em',
+                    color: isActive ? '#0A0A0A' : '#555550',
+                    cursor: 'pointer',
+                    transition: 'all 180ms',
+                    minHeight: '32px',
+                    position: 'relative',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) (e.currentTarget as HTMLButtonElement).style.color = '#C4A44A';
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) (e.currentTarget as HTMLButtonElement).style.color = '#555550';
+                  }}
+                >
+                  {label}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -132,55 +152,60 @@ export default function Navbar() {
           onClick={() => setOpen(!open)}
           aria-label={open ? 'Menü schließen' : 'Menü öffnen'}
           aria-expanded={open}
-          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px', color: '#334155', display: 'none' }}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px', color: '#F9F7F4', display: 'none' }}
         >
-          {open ? <X size={24} /> : <Menu size={24} />}
+          {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </nav>
 
-      {/* Mobile menu – full dropdown */}
+      {/* Mobile menu */}
       {open && (
-        <div
-          style={{
-            background: '#fff',
-            borderTop: '1px solid #E2E8F0',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          {/* Nav links */}
-          <div style={{ padding: '4px 24px 0' }}>
+        <div style={{ background: '#0A0A0A', borderTop: '1px solid rgba(196,164,74,0.15)', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ padding: '8px 24px 0' }}>
             {navLinks.map((l) => (
               <button
                 key={l.href}
                 onClick={() => handleNav(l.href)}
-                style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Jost', sans-serif", fontWeight: 500, fontSize: '17px', color: '#334155', padding: '14px 0', borderBottom: '1px solid #F1F5F9' }}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  textAlign: 'left',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontWeight: 400,
+                  fontSize: '13px',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: '#888880',
+                  padding: '16px 0',
+                  borderBottom: '1px solid rgba(255,255,255,0.05)',
+                }}
               >
                 {l.label}
               </button>
             ))}
           </div>
 
-          {/* Language switcher – mobile */}
           <div style={{ display: 'flex', gap: '8px', padding: '16px 24px' }}>
             {FLAGS.map(({ lang: l, label }) => (
               <button
                 key={l}
                 onClick={() => setLang(l)}
-                aria-label={label}
                 style={{
-                  background: lang === l ? '#EA580C' : 'transparent',
-                  border: `1px solid ${lang === l ? '#EA580C' : '#E2E8F0'}`,
+                  background: lang === l ? '#C4A44A' : 'transparent',
+                  border: `1px solid ${lang === l ? '#C4A44A' : 'rgba(196,164,74,0.25)'}`,
                   borderRadius: 0,
                   padding: '8px 16px',
-                  fontFamily: "'Jost', sans-serif",
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  letterSpacing: '0.08em',
-                  color: lang === l ? '#fff' : '#64748B',
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  letterSpacing: '0.1em',
+                  color: lang === l ? '#0A0A0A' : '#555550',
                   cursor: 'pointer',
                   minHeight: '40px',
-                  minWidth: '56px',
+                  minWidth: '52px',
                 }}
               >
                 {label}
@@ -188,29 +213,18 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Contact info */}
-          <div style={{ borderTop: '1px solid #F1F5F9', margin: '0 24px', padding: '16px 0 20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <a
-              href={`tel:${t.footer.phone.replace(/\s/g, '')}`}
-              style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}
-            >
-              <span style={{ width: '36px', height: '36px', background: '#EA580C', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Phone size={16} color="#fff" strokeWidth={1.5} />
+          <div style={{ borderTop: '1px solid rgba(196,164,74,0.1)', margin: '0 24px', padding: '16px 0 24px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <a href={`tel:${t.footer.phone.replace(/\s/g, '')}`} style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
+              <span style={{ width: '36px', height: '36px', border: '1px solid rgba(196,164,74,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Phone size={15} color="#C4A44A" strokeWidth={1.5} />
               </span>
-              <span style={{ fontFamily: "'Jost', sans-serif", fontSize: '15px', fontWeight: 600, color: '#0F172A' }}>
-                {t.footer.phone}
-              </span>
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '15px', fontWeight: 500, color: '#F9F7F4' }}>{t.footer.phone}</span>
             </a>
-            <a
-              href={`mailto:${t.footer.email}`}
-              style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}
-            >
-              <span style={{ width: '36px', height: '36px', background: '#EA580C', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Mail size={16} color="#fff" strokeWidth={1.5} />
+            <a href={`mailto:${t.footer.email}`} style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
+              <span style={{ width: '36px', height: '36px', border: '1px solid rgba(196,164,74,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Mail size={15} color="#C4A44A" strokeWidth={1.5} />
               </span>
-              <span style={{ fontFamily: "'Jost', sans-serif", fontSize: '15px', fontWeight: 600, color: '#0F172A' }}>
-                {t.footer.email}
-              </span>
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '15px', fontWeight: 500, color: '#F9F7F4' }}>{t.footer.email}</span>
             </a>
           </div>
         </div>

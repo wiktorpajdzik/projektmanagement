@@ -1,42 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 :root {
-  --bg: #F8FAFC;
-  --surface: #FFFFFF;
-  --surface-alt: #F1F5F9;
-  --primary: #334155;
-  --primary-dark: #0F172A;
-  --accent: #EA580C;
-  --accent-hover: #C2410C;
-  --muted: #64748B;
-  --border: #E2E8F0;
-  --text: #1E293B;
-  --text-muted: #64748B;
+  --gold: #C4A44A;
+  --gold-light: #E2C97E;
+  --gold-dark: #9A7B2F;
+  --black: #0A0A0A;
+  --black-2: #111111;
+  --black-3: #181818;
+  --black-4: #242424;
+  --white: #F9F7F4;
+  --white-2: #EDE9E0;
+  --muted: #888880;
+  --muted-2: #555550;
+  --surface-light: #F5F2EC;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
-  background-color: var(--bg);
-  color: var(--text);
-  font-family: 'Jost', sans-serif;
+  background-color: var(--black);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Bodoni Moda', serif;
-  line-height: 1.2;
-  color: var(--primary-dark);
+  font-family: 'Cormorant Garamond', serif;
+  line-height: 1.1;
 }
+
+::selection { background: var(--gold); color: var(--black); }
+
+img { display: block; }
 
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -45,17 +45,8 @@ h1, h2, h3, h4 {
   }
 }
 
-/* Utility classes via Tailwind theme */
 @theme {
-  --color-accent: #EA580C;
-  --color-accent-hover: #C2410C;
-  --color-primary: #334155;
-  --color-primary-dark: #0F172A;
-  --color-surface: #FFFFFF;
-  --color-surface-alt: #F1F5F9;
-  --color-border: #E2E8F0;
-  --color-muted: #64748B;
-
-  --font-heading: 'Bodoni Moda', serif;
-  --font-body: 'Jost', sans-serif;
+  --color-gold: #C4A44A;
+  --font-heading: 'Cormorant Garamond', serif;
+  --font-body: 'DM Sans', sans-serif;
 }

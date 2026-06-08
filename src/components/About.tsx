@@ -16,142 +16,80 @@ export default function About() {
   return (
     <section
       id="ueber-uns"
-      style={{
-        background: '#0F172A',
-        padding: '100px 0',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
+      style={{ background: '#0A0A0A', padding: '120px 0', position: 'relative', overflow: 'hidden' }}
     >
-      {/* Background grid */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `linear-gradient(rgba(234,88,12,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(234,88,12,0.05) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
-          pointerEvents: 'none',
-        }}
-      />
+      {/* Decorative circles */}
+      <div aria-hidden="true" style={{ position: 'absolute', right: '-200px', top: '50%', transform: 'translateY(-50%)', width: '700px', height: '700px', borderRadius: '50%', border: '1px solid rgba(196,164,74,0.07)', pointerEvents: 'none' }} />
+      <div aria-hidden="true" style={{ position: 'absolute', right: '-100px', top: '50%', transform: 'translateY(-50%)', width: '500px', height: '500px', borderRadius: '50%', border: '1px solid rgba(196,164,74,0.05)', pointerEvents: 'none' }} />
 
-      <div
-        style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          padding: '0 24px',
-          position: 'relative',
-          zIndex: 1,
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-          gap: '80px',
-          alignItems: 'center',
-        }}
-      >
+      <div className="pm-about-grid" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 1 }}>
+
         {/* Left: Text */}
         <div>
-          <p style={{ ...labelStyleDark }}>{t.nav.about}</p>
-          <h2
-            style={{
-              fontFamily: "'Bodoni Moda', serif",
-              fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
-              fontWeight: 700,
-              color: '#F8FAFC',
-              marginBottom: '8px',
-            }}
-          >
+          <p style={labelStyle}>{t.nav.about}</p>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 600, color: '#F9F7F4', marginBottom: '8px', lineHeight: 1.1 }}>
             {t.about.heading}
           </h2>
-          <p
-            style={{
-              fontFamily: "'Bodoni Moda', serif",
-              fontStyle: 'italic',
-              fontSize: '1.1rem',
-              color: '#EA580C',
-              marginBottom: '28px',
-            }}
-          >
+          <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontSize: '1.1rem', color: '#C4A44A', marginBottom: '28px' }}>
             {t.about.subheading}
           </p>
+          <div style={{ width: '40px', height: '1px', background: '#C4A44A', marginBottom: '28px' }} />
           <p style={bodyStyle}>{t.about.body}</p>
           <p style={{ ...bodyStyle, marginTop: '16px' }}>{t.about.body2}</p>
-
-          {/* Checklist */}
           <ul style={{ listStyle: 'none', padding: 0, marginTop: '32px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {checks.map((item, i) => (
-              <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <CheckCircle2 size={18} color="#EA580C" strokeWidth={2} style={{ flexShrink: 0 }} />
-                <span style={{ fontFamily: "'Jost', sans-serif", fontSize: '15px', fontWeight: 400, color: '#94A3B8' }}>
-                  {item}
-                </span>
+              <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <CheckCircle2 size={16} color="#C4A44A" strokeWidth={1.5} style={{ flexShrink: 0 }} />
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', fontWeight: 300, color: '#888880' }}>{item}</span>
               </li>
             ))}
           </ul>
         </div>
 
         {/* Right: Stats */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'rgba(196,164,74,0.15)' }}>
           {t.about.stats.map((stat, i) => (
             <div
               key={i}
-              style={{
-                background: i === 0 ? '#EA580C' : '#1E293B',
-                padding: '40px 36px',
-                borderLeft: i !== 0 ? '4px solid #1E293B' : 'none',
-                transition: 'background 200ms',
-              }}
-              onMouseEnter={(e) => {
-                if (i !== 0) (e.currentTarget as HTMLDivElement).style.background = '#263348';
-              }}
-              onMouseLeave={(e) => {
-                if (i !== 0) (e.currentTarget as HTMLDivElement).style.background = '#1E293B';
-              }}
+              style={{ background: i === 0 ? '#C4A44A' : '#111111', padding: '40px 36px', transition: 'background 250ms', position: 'relative', overflow: 'hidden' }}
+              onMouseEnter={(e) => { if (i !== 0) (e.currentTarget as HTMLDivElement).style.background = '#181818'; }}
+              onMouseLeave={(e) => { if (i !== 0) (e.currentTarget as HTMLDivElement).style.background = '#111111'; }}
             >
-              <div
-                style={{
-                  fontFamily: "'Bodoni Moda', serif",
-                  fontSize: 'clamp(2.5rem, 4vw, 3.5rem)',
-                  fontWeight: 700,
-                  color: i === 0 ? '#fff' : '#EA580C',
-                  lineHeight: 1,
-                }}
-              >
+              {i === 0 && <div style={{ position: 'absolute', bottom: '-20px', right: '-20px', width: '100px', height: '100px', borderRadius: '50%', border: '1px solid rgba(10,10,10,0.15)', pointerEvents: 'none' }} />}
+              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2.8rem, 5vw, 4rem)', fontWeight: 600, color: i === 0 ? '#0A0A0A' : '#C4A44A', lineHeight: 1 }}>
                 {stat.value}
               </div>
-              <div
-                style={{
-                  fontFamily: "'Jost', sans-serif",
-                  fontSize: '14px',
-                  fontWeight: 400,
-                  color: i === 0 ? 'rgba(255,255,255,0.8)' : '#64748B',
-                  marginTop: '8px',
-                  letterSpacing: '0.04em',
-                }}
-              >
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '11px', fontWeight: 400, letterSpacing: '0.16em', textTransform: 'uppercase', color: i === 0 ? 'rgba(10,10,10,0.6)' : '#555550', marginTop: '10px' }}>
                 {stat.label}
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      <style>{`
+        .pm-about-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 72px;
+          align-items: center;
+        }
+        @media (max-width: 860px) {
+          .pm-about-grid {
+            grid-template-columns: 1fr;
+            gap: 48px;
+          }
+          #ueber-uns { padding: 80px 0 !important; }
+        }
+      `}</style>
     </section>
   );
 }
 
-const labelStyleDark: React.CSSProperties = {
-  fontFamily: "'Jost', sans-serif",
-  fontWeight: 500,
-  fontSize: '12px',
-  letterSpacing: '0.2em',
-  textTransform: 'uppercase',
-  color: '#EA580C',
-  marginBottom: '12px',
+const labelStyle: React.CSSProperties = {
+  fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: '11px',
+  letterSpacing: '0.28em', textTransform: 'uppercase', color: '#C4A44A', marginBottom: '14px',
 };
-
 const bodyStyle: React.CSSProperties = {
-  fontFamily: "'Jost', sans-serif",
-  fontSize: '16px',
-  fontWeight: 300,
-  color: '#94A3B8',
-  lineHeight: 1.75,
+  fontFamily: "'DM Sans', sans-serif", fontSize: '15px', fontWeight: 300, color: '#888880', lineHeight: 1.8,
 };
