@@ -18,7 +18,7 @@ export default function Contact() {
     const e: FormErrors = {};
     if (!form.name.trim()) e.name = t.contact.required;
     if (!form.email.trim()) { e.email = t.contact.required; }
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { e.email = '✕ Ungültige E-Mail'; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { e.email = t.contact.email_invalid; }
     if (!form.message.trim()) e.message = t.contact.required;
     setErrors(e);
     return Object.keys(e).length === 0;

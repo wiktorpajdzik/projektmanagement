@@ -5,6 +5,15 @@ import { Paintbrush, Layers, LayoutTemplate, Waves, Grid3X3, Building2 } from 'l
 
 const ICONS = [Paintbrush, Layers, LayoutTemplate, Waves, Grid3X3, Building2];
 
+const IMAGES = [
+  '/images/malowanie.jpg',
+  '/images/tynkowanie.jpg',
+  '/images/gips.jpg',
+  '/images/posadzka.jpg',
+  '/images/plytki.jpg',
+  '/images/klucz.jpg',
+];
+
 export default function Services() {
   const { t } = useLang();
 
@@ -43,87 +52,90 @@ export default function Services() {
                 style={{
                   background: '#FDFCF9',
                   padding: '44px 40px',
-                  transition: 'background 250ms',
+                  transition: 'background 350ms',
                   cursor: 'default',
                   position: 'relative',
                   overflow: 'hidden',
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.background = '#0A0A0A';
-                  const title = e.currentTarget.querySelector('.s-title') as HTMLElement;
-                  const desc = e.currentTarget.querySelector('.s-desc') as HTMLElement;
-                  const line = e.currentTarget.querySelector('.s-line') as HTMLElement;
-                  const iconBox = e.currentTarget.querySelector('.s-icon') as HTMLElement;
-                  if (title) title.style.color = '#F9F7F4';
-                  if (desc) desc.style.color = '#888880';
-                  if (line) line.style.background = '#C4A44A';
-                  if (iconBox) iconBox.style.borderColor = 'rgba(196,164,74,0.4)';
+                  const card = e.currentTarget as HTMLDivElement;
+                  card.style.backgroundImage = `url(${IMAGES[i]})`;
+                  card.style.backgroundSize = 'cover';
+                  card.style.backgroundPosition = 'center';
+                  const overlay = card.querySelector('.s-overlay') as HTMLElement;
+                  const content = card.querySelector('.s-content') as HTMLElement;
+                  if (overlay) overlay.style.opacity = '1';
+                  if (content) content.style.opacity = '0';
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.background = '#FDFCF9';
-                  const title = e.currentTarget.querySelector('.s-title') as HTMLElement;
-                  const desc = e.currentTarget.querySelector('.s-desc') as HTMLElement;
-                  const line = e.currentTarget.querySelector('.s-line') as HTMLElement;
-                  const iconBox = e.currentTarget.querySelector('.s-icon') as HTMLElement;
-                  if (title) title.style.color = '#0A0A0A';
-                  if (desc) desc.style.color = '#888880';
-                  if (line) line.style.background = '#D8D4CC';
-                  if (iconBox) iconBox.style.borderColor = 'rgba(10,10,10,0.12)';
+                  const card = e.currentTarget as HTMLDivElement;
+                  card.style.backgroundImage = 'none';
+                  const overlay = card.querySelector('.s-overlay') as HTMLElement;
+                  const content = card.querySelector('.s-content') as HTMLElement;
+                  if (overlay) overlay.style.opacity = '0';
+                  if (content) content.style.opacity = '1';
                 }}
               >
-                {/* Number */}
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '3rem', fontWeight: 400, color: 'rgba(196,164,74,0.15)', position: 'absolute', top: '16px', right: '24px', lineHeight: 1 }}>
-                  {String(i + 1).padStart(2, '0')}
-                </div>
-
+                {/* Dark overlay on hover */}
                 <div
-                  className="s-icon"
+                  className="s-overlay"
                   style={{
-                    width: '52px',
-                    height: '52px',
-                    border: '1px solid rgba(10,10,10,0.12)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: '28px',
-                    transition: 'border-color 250ms',
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'rgba(10,10,10,0.55)',
+                    opacity: 0,
+                    transition: 'opacity 350ms',
+                    pointerEvents: 'none',
                   }}
-                >
-                  <Icon size={20} color="#C4A44A" strokeWidth={1.5} />
-                </div>
-
-                <h3
-                  className="s-title"
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: '1.5rem',
-                    fontWeight: 600,
-                    color: '#0A0A0A',
-                    marginBottom: '8px',
-                    transition: 'color 250ms',
-                  }}
-                >
-                  {item.title}
-                </h3>
-
-                <div
-                  className="s-line"
-                  style={{ width: '32px', height: '1px', background: '#D8D4CC', marginBottom: '16px', transition: 'background 250ms' }}
                 />
 
-                <p
-                  className="s-desc"
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: '14px',
-                    fontWeight: 300,
-                    color: '#888880',
-                    lineHeight: 1.7,
-                    transition: 'color 250ms',
-                  }}
-                >
-                  {item.desc}
-                </p>
+                {/* Card content — fades out on hover */}
+                <div className="s-content" style={{ transition: 'opacity 250ms', position: 'relative', zIndex: 1 }}>
+                  {/* Number */}
+                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '3rem', fontWeight: 400, color: 'rgba(196,164,74,0.15)', position: 'absolute', top: '-28px', right: '0', lineHeight: 1 }}>
+                    {String(i + 1).padStart(2, '0')}
+                  </div>
+
+                  <div
+                    style={{
+                      width: '52px',
+                      height: '52px',
+                      border: '1px solid rgba(10,10,10,0.12)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '28px',
+                    }}
+                  >
+                    <Icon size={20} color="#C4A44A" strokeWidth={1.5} />
+                  </div>
+
+                  <h3
+                    style={{
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontSize: '1.5rem',
+                      fontWeight: 600,
+                      color: '#0A0A0A',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    {item.title}
+                  </h3>
+
+                  <div style={{ width: '32px', height: '1px', background: '#D8D4CC', marginBottom: '16px' }} />
+
+                  <p
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: '14px',
+                      fontWeight: 300,
+                      color: '#888880',
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {item.desc}
+                  </p>
+                </div>
               </div>
             );
           })}

@@ -25,12 +25,12 @@ export default function Hero() {
     >
       {/* Background image */}
       <Image
-        src="/images/hero-bg.jpg"
+        src="/images/hero-bg-new.jpg"
         alt=""
         fill
         priority
         sizes="100vw"
-        style={{ objectFit: 'cover', objectPosition: 'center', opacity: 0.35 }}
+        style={{ objectFit: 'cover', objectPosition: 'center', opacity: 0.55 }}
         onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
       />
 
@@ -40,7 +40,7 @@ export default function Hero() {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(105deg, rgba(10,10,10,0.97) 40%, rgba(10,10,10,0.6) 100%)',
+          background: 'linear-gradient(105deg, rgba(10,10,10,0.88) 35%, rgba(10,10,10,0.4) 100%)',
         }}
       />
 

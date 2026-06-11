@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLang } from '@/contexts/LanguageContext';
@@ -102,8 +102,21 @@ export default function Gallery() {
   const lbIdx    = popup?.lightboxId != null ? lbItems.findIndex(i => i.id === popup.lightboxId) : -1;
   const lbItem   = lbIdx >= 0 ? lbItems[lbIdx] : null;
 
-  const goPrev = () => { if (lbIdx > 0) openLightbox(lbItems[lbIdx - 1].id); };
-  const goNext = () => { if (lbIdx < lbItems.length - 1) openLightbox(lbItems[lbIdx + 1].id); };
+  const goPrev = useCallback(() => { if (lbIdx > 0) openLightbox(lbItems[lbIdx - 1].id); }, [lbIdx, lbItems]);
+  const goNext = useCallback(() => { if (lbIdx < lbItems.length - 1) openLightbox(lbItems[lbIdx + 1].id); }, [lbIdx, lbItems]);
+
+  useEffect(() => {
+    if (!popup) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { lbItem ? closeLightbox() : closePopup(); }
+      if (lbItem) {
+        if (e.key === 'ArrowLeft') goPrev();
+        if (e.key === 'ArrowRight') goNext();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [popup, lbItem, goPrev, goNext]);
 
   return (
     <section id="galerie" style={{ background: '#0F0F0F', padding: '120px 0' }}>

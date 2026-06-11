@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLang } from '@/contexts/LanguageContext';
 
@@ -112,10 +112,23 @@ const LABELS = {
 export default function Testimonials() {
   const { lang } = useLang();
   const sliderRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
   const label = LABELS[lang];
 
   const getText = (tx: Testimonial['text']) => tx[lang];
   const getRole = (r: Testimonial['role']) => r[lang];
+
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const cardWidth = el.scrollWidth / TESTIMONIALS.length;
+      const idx = Math.round(el.scrollLeft / cardWidth);
+      setActiveIdx(Math.min(idx, TESTIMONIALS.length - 1));
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, []);
 
   const scroll = (dir: 'left' | 'right') => {
     const el = sliderRef.current;
@@ -241,7 +254,7 @@ export default function Testimonials() {
       {/* Dots */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', marginTop: '36px' }}>
         {TESTIMONIALS.map((_, i) => (
-          <div key={i} style={{ width: i === 0 ? '24px' : '6px', height: '6px', borderRadius: '3px', background: i === 0 ? '#C4A44A' : 'rgba(196,164,74,0.25)', transition: 'all 300ms' }} />
+          <div key={i} style={{ width: i === activeIdx ? '24px' : '6px', height: '6px', borderRadius: '3px', background: i === activeIdx ? '#C4A44A' : 'rgba(196,164,74,0.25)', transition: 'all 300ms' }} />
         ))}
       </div>
 

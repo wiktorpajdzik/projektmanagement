@@ -58,6 +58,7 @@ export const translations = {
       submit: 'Nachricht senden',
       success: 'Vielen Dank! Wir melden uns bald bei Ihnen.',
       required: 'Pflichtfeld',
+      email_invalid: 'Ungültige E-Mail-Adresse',
     },
     footer: {
       company: 'ProjektManagement',
@@ -129,6 +130,7 @@ export const translations = {
       submit: 'Send Message',
       success: 'Thank you! We will get back to you shortly.',
       required: 'Required field',
+      email_invalid: 'Invalid email address',
     },
     footer: {
       company: 'ProjektManagement',
@@ -200,6 +202,7 @@ export const translations = {
       submit: 'Wyślij wiadomość',
       success: 'Dziękujemy! Odezwiemy się wkrótce.',
       required: 'Pole wymagane',
+      email_invalid: 'Nieprawidłowy adres e-mail',
     },
     footer: {
       company: 'ProjektManagement',

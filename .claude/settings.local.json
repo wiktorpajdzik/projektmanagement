@@ -9,7 +9,11 @@
       "Bash(git branch *)",
       "Bash(git push *)",
       "Bash(git commit *)",
-      "PowerShell(head -40)"
+      "PowerShell(head -40)",
+      "Bash(npx tsc *)",
+      "Bash(Remove-Item -Recurse -Force \"E:\\\\CLAUDE\\\\projektmanagement.de\\\\.next\\\\cache\\\\images\" -ErrorAction SilentlyContinue)",
+      "Bash(Write-Host \"Cache wyczyszczony\")",
+      "PowerShell(Rename-Item \"E:\\\\CLAUDE\\\\projektmanagement.de\\\\public\\\\images\\\\hero-bg.jpg\" \"hero-bg-new.jpg\")"
     ]
   }
 }
