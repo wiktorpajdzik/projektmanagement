@@ -25,7 +25,7 @@ export default function Hero() {
     >
       {/* Background image */}
       <Image
-        src="/images/hero-bg-new.jpg"
+        src="/images/hero-bg-new-3.jpg"
         alt=""
         fill
         priority

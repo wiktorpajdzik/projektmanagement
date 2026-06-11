@@ -11,7 +11,7 @@ const IMAGES = [
   '/images/gips.jpg',
   '/images/posadzka.jpg',
   '/images/plytki.jpg',
-  '/images/klucz.jpg',
+  '/images/72732.jpg',
 ];
 
 export default function Services() {
