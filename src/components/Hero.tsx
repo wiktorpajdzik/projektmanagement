@@ -30,7 +30,7 @@ export default function Hero() {
         fill
         priority
         sizes="100vw"
-        style={{ objectFit: 'cover', objectPosition: 'center', opacity: 0.55 }}
+        style={{ objectFit: 'cover', objectPosition: 'center', opacity: 0.78 }}
         onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
       />
 
@@ -40,7 +40,7 @@ export default function Hero() {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(105deg, rgba(10,10,10,0.88) 35%, rgba(10,10,10,0.4) 100%)',
+          background: 'linear-gradient(105deg, rgba(10,10,10,0.72) 35%, rgba(10,10,10,0.2) 100%)',
         }}
       />
 
@@ -199,11 +199,12 @@ export default function Hero() {
         }}
       >
         <div
+          className="pm-hero-stats-row"
           style={{
             borderTop: '1px solid rgba(196,164,74,0.2)',
             paddingTop: '28px',
             display: 'flex',
-            flexWrap: 'wrap',
+            flexWrap: 'nowrap',
             gap: '0',
           }}
         >
@@ -213,6 +214,7 @@ export default function Hero() {
           ].map((s, i) => (
             <div
               key={i}
+              className="pm-hero-stat-item"
               style={{
                 paddingRight: '48px',
                 marginRight: '48px',
@@ -273,8 +275,12 @@ export default function Hero() {
           50% { transform: translateX(-50%) translateY(8px); }
         }
         @media (max-width: 640px) {
-          .pm-hero-content { padding-top: 96px !important; }
-          .pm-hero-stats { margin-bottom: 48px !important; margin-top: 32px !important; }
+          #home { min-height: unset !important; }
+          .pm-hero-content { padding: 104px 24px 24px !important; flex: unset !important; }
+          .pm-hero-stats { padding: 0 24px !important; margin-bottom: 40px !important; }
+          .pm-hero-stats { margin-bottom: 32px !important; margin-top: 0px !important; }
+          .pm-hero-stats-row { justify-content: center; }
+          .pm-hero-stat-item { padding-right: 28px !important; margin-right: 28px !important; }
         }
       `}</style>
     </section>
