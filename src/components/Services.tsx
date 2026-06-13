@@ -18,7 +18,7 @@ export default function Services() {
   const { t } = useLang();
 
   return (
-    <section id="leistungen" style={{ background: '#F5F2EC', padding: '120px 0' }}>
+    <section id="leistungen" style={{ background: '#F5F2EC', padding: '120px 0 60px' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
 
         <div style={{ marginBottom: '72px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>

@@ -183,68 +183,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Stats — pinned to bottom, always visible */}
-      <div
-        className="pm-hero-stats"
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          width: '100%',
-          maxWidth: '1280px',
-          alignSelf: 'center',
-          padding: '0 24px',
-          boxSizing: 'border-box',
-          marginBottom: '72px',
-          marginTop: '48px',
-        }}
-      >
-        <div
-          className="pm-hero-stats-row"
-          style={{
-            borderTop: '1px solid rgba(196,164,74,0.2)',
-            paddingTop: '28px',
-            display: 'flex',
-            flexWrap: 'nowrap',
-            gap: '0',
-          }}
-        >
-          {[
-            { num: '10+', label: 'Jahre Erfahrung' },
-            { num: '500+', label: 'Projekte' },
-          ].map((s, i) => (
-            <div
-              key={i}
-              className="pm-hero-stat-item"
-              style={{
-                paddingRight: '48px',
-                marginRight: '48px',
-                borderRight: i < 1 ? '1px solid rgba(196,164,74,0.15)' : 'none',
-              }}
-            >
-              <div style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: 'clamp(2rem, 4vw, 2.8rem)',
-                fontWeight: 600,
-                color: '#C4A44A',
-                lineHeight: 1,
-              }}>
-                {s.num}
-              </div>
-              <div style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: '10px',
-                fontWeight: 400,
-                color: '#555550',
-                marginTop: '6px',
-                letterSpacing: '0.16em',
-                textTransform: 'uppercase',
-              }}>
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* Scroll hint */}
       <button
@@ -277,10 +215,7 @@ export default function Hero() {
         @media (max-width: 640px) {
           #home { min-height: unset !important; }
           .pm-hero-content { padding: 104px 24px 24px !important; flex: unset !important; }
-          .pm-hero-stats { padding: 0 24px !important; margin-bottom: 40px !important; }
-          .pm-hero-stats { margin-bottom: 32px !important; margin-top: 0px !important; }
-          .pm-hero-stats-row { justify-content: center; }
-          .pm-hero-stat-item { padding-right: 28px !important; margin-right: 28px !important; }
+
         }
       `}</style>
     </section>

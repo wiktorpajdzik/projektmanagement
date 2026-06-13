@@ -97,12 +97,12 @@ export default function Navbar() {
                 fontSize: '13px',
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: '#888880',
+                color: '#FFFFFF',
                 padding: '4px 0',
                 transition: 'color 200ms',
               }}
               onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = '#C4A44A')}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = '#888880')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = '#FFFFFF')}
             >
               {l.label}
             </button>
@@ -126,7 +126,7 @@ export default function Navbar() {
                     fontFamily: "'DM Sans', sans-serif",
                     fontWeight: isActive ? 600 : 400,
                     letterSpacing: '0.12em',
-                    color: isActive ? '#0A0A0A' : '#555550',
+                    color: isActive ? '#0A0A0A' : '#CCCCCC',
                     cursor: 'pointer',
                     transition: 'all 180ms',
                     minHeight: '32px',
@@ -136,7 +136,7 @@ export default function Navbar() {
                     if (!isActive) (e.currentTarget as HTMLButtonElement).style.color = '#C4A44A';
                   }}
                   onMouseLeave={(e) => {
-                    if (!isActive) (e.currentTarget as HTMLButtonElement).style.color = '#555550';
+                    if (!isActive) (e.currentTarget as HTMLButtonElement).style.color = '#CCCCCC';
                   }}
                 >
                   {label}
@@ -202,7 +202,7 @@ export default function Navbar() {
                   fontSize: '11px',
                   fontWeight: 600,
                   letterSpacing: '0.1em',
-                  color: lang === l ? '#0A0A0A' : '#555550',
+                  color: lang === l ? '#0A0A0A' : '#CCCCCC',
                   cursor: 'pointer',
                   minHeight: '40px',
                   minWidth: '52px',

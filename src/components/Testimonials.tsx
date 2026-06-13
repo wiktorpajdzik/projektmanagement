@@ -137,7 +137,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section id="meinungen" style={{ background: '#F5F2EC', padding: '120px 0', position: 'relative', overflow: 'hidden' }}>
+    <section id="meinungen" style={{ background: '#F5F2EC', padding: '72px 0', position: 'relative', overflow: 'hidden' }}>
 
       {/* Decorative circles */}
       <div aria-hidden="true" style={{ position: 'absolute', right: '-180px', top: '50%', transform: 'translateY(-50%)', width: '560px', height: '560px', borderRadius: '50%', border: '1px solid rgba(196,164,74,0.12)', pointerEvents: 'none' }} />
@@ -258,27 +258,13 @@ export default function Testimonials() {
         ))}
       </div>
 
-      {/* Trust bar */}
-      <div className="pm-trust-bar" style={{ maxWidth: '1280px', margin: '64px auto 0', padding: '32px 24px 0', borderTop: '1px solid rgba(196,164,74,0.15)', display: 'flex', flexWrap: 'wrap', gap: '0', justifyContent: 'center' }}>
-        {[
-          { num: '500+', label: { de: 'Projekte', en: 'Projects', pl: 'Projektów' } },
-          { num: '10+',  label: { de: 'Jahre',    en: 'Years',    pl: 'Lat' } },
-          { num: '100%', label: { de: 'Zufriedenheit', en: 'Satisfaction', pl: 'Satysfakcji' } },
-        ].map((s, i) => (
-          <div key={i} style={{ textAlign: 'center', padding: '0 48px', borderRight: i < 2 ? '1px solid rgba(196,164,74,0.15)' : 'none' }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2.4rem', fontWeight: 600, color: '#C4A44A', lineHeight: 1 }}>{s.num}</div>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '10px', fontWeight: 400, color: '#888880', letterSpacing: '0.16em', textTransform: 'uppercase', marginTop: '8px' }}>{s.label[lang]}</div>
-          </div>
-        ))}
-      </div>
 
       <style>{`
         .pm-slider-hide-scrollbar::-webkit-scrollbar { display: none; }
         @media (max-width: 640px) {
-          #meinungen { padding: 80px 0 !important; }
+          #meinungen { padding: 48px 0 !important; }
           .pm-t-card { width: 88vw !important; padding: 32px 24px !important; }
-          .pm-trust-bar { padding: 24px 0 0 !important; }
-          .pm-trust-bar > div { padding: 0 24px !important; }
+
         }
       `}</style>
     </section>

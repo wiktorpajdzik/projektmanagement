@@ -21,7 +21,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer style={{ background: '#0A0A0A', color: '#555550', borderTop: '1px solid rgba(196,164,74,0.12)' }} role="contentinfo">
+    <footer style={{ background: '#0F0E0C', color: '#555550', borderTop: '1px solid rgba(196,164,74,0.12)' }} role="contentinfo">
       <div
         className="pm-footer-grid"
         style={{

@@ -34,23 +34,23 @@ export default function Contact() {
   };
 
   const inputStyle = (hasError?: string): React.CSSProperties => ({
-    width: '100%', background: '#111111',
-    border: `1px solid ${hasError ? '#DC2626' : 'rgba(196,164,74,0.2)'}`,
+    width: '100%', background: '#F5F2EC',
+    border: `1px solid ${hasError ? '#DC2626' : 'rgba(196,164,74,0.3)'}`,
     borderRadius: 0, padding: '14px 16px',
     fontFamily: "'DM Sans', sans-serif", fontSize: '14px', fontWeight: 300,
-    color: '#F9F7F4', outline: 'none', transition: 'border-color 200ms',
+    color: '#0A0A0A', outline: 'none', transition: 'border-color 200ms',
     boxSizing: 'border-box', minHeight: '48px',
   });
 
   const fldLabel: React.CSSProperties = {
     fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: '11px',
-    letterSpacing: '0.12em', textTransform: 'uppercase', color: '#555550',
+    letterSpacing: '0.12em', textTransform: 'uppercase', color: '#888880',
     marginBottom: '8px', display: 'block',
   };
   const errStyle: React.CSSProperties = { fontFamily: "'DM Sans', sans-serif", fontSize: '11px', color: '#DC2626', marginTop: '4px' };
 
   return (
-    <section id="kontakt" style={{ background: '#0A0A0A', padding: '120px 0' }}>
+    <section id="kontakt" style={{ background: '#F5F2EC', padding: '80px 0' }}>
       <div className="pm-contact-grid" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
 
         {/* Left */}
@@ -71,8 +71,8 @@ export default function Contact() {
                   <Icon size={15} color="#C4A44A" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '10px', color: '#555550', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: '4px' }}>{label}</p>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', fontWeight: 300, color: '#888880' }}>{val}</p>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '10px', color: '#888880', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: '4px' }}>{label}</p>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '14px', fontWeight: 300, color: '#333330' }}>{val}</p>
                 </div>
               </div>
             ))}
@@ -80,13 +80,13 @@ export default function Contact() {
         </div>
 
         {/* Right: Form */}
-        <div className="pm-contact-form-box" style={{ background: '#111111', border: '1px solid rgba(196,164,74,0.1)' }}>
+        <div className="pm-contact-form-box" style={{ background: '#FDFCF9', border: '1px solid rgba(196,164,74,0.2)' }}>
           {sent ? (
             <div style={{ textAlign: 'center', padding: '48px 0' }}>
               <div style={{ width: '64px', height: '64px', borderRadius: '50%', border: '1px solid rgba(196,164,74,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
                 <CheckCircle2 size={28} color="#C4A44A" strokeWidth={1.5} />
               </div>
-              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.4rem', fontWeight: 600, color: '#F9F7F4' }}>{t.contact.success}</p>
+              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.4rem', fontWeight: 600, color: '#0A0A0A' }}>{t.contact.success}</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate>
@@ -134,7 +134,7 @@ export default function Contact() {
               </div>
 
               <button type="submit" disabled={sending}
-                style={{ marginTop: '24px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: sending ? '#242424' : '#C4A44A', color: sending ? '#555550' : '#0A0A0A', border: 'none', padding: '16px 24px', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: '12px', letterSpacing: '0.14em', textTransform: 'uppercase', cursor: sending ? 'not-allowed' : 'pointer', transition: 'background 200ms', minHeight: '52px' }}
+                style={{ marginTop: '24px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: sending ? '#E0DCCE' : '#C4A44A', color: sending ? '#888880' : '#0A0A0A', border: 'none', padding: '16px 24px', fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: '12px', letterSpacing: '0.14em', textTransform: 'uppercase', cursor: sending ? 'not-allowed' : 'pointer', transition: 'background 200ms', minHeight: '52px' }}
                 onMouseEnter={(e) => { if (!sending) (e.currentTarget as HTMLButtonElement).style.background = '#E2C97E'; }}
                 onMouseLeave={(e) => { if (!sending) (e.currentTarget as HTMLButtonElement).style.background = '#C4A44A'; }}
               >
@@ -166,7 +166,6 @@ export default function Contact() {
             grid-template-columns: 1fr;
             gap: 48px;
           }
-          #kontakt { padding: 80px 0 !important; }
         }
         @media (max-width: 540px) {
           .pm-contact-form-box { padding: 32px 20px; }
@@ -184,8 +183,8 @@ const sectionLabel: React.CSSProperties = {
 };
 const headingStyle: React.CSSProperties = {
   fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2rem, 4vw, 3.2rem)',
-  fontWeight: 600, color: '#F9F7F4', lineHeight: 1.1,
+  fontWeight: 600, color: '#0A0A0A', lineHeight: 1.1,
 };
 const subStyle: React.CSSProperties = {
-  fontFamily: "'DM Sans', sans-serif", fontSize: '15px', fontWeight: 300, color: '#888880', lineHeight: 1.75,
+  fontFamily: "'DM Sans', sans-serif", fontSize: '15px', fontWeight: 300, color: '#555550', lineHeight: 1.75,
 };
